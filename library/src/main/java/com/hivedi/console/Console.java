@@ -1,6 +1,8 @@
 package com.hivedi.console;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -54,13 +56,23 @@ public class Console {
 	 * @param e exception to print on log
 	 * @param type - 0 normal, 1 - error, 2 - debug, 3 - warning, 4 - info
 	 */
-	private static void logBase(String logString, Exception e, int type) {
+	private static void logBase(@NonNull String logString, @Nullable Exception e, int type) {
 		if (isEnabled() && logWrites.size() > 0) {
 			for(LogWriterBase lb : logWrites) {
 				lb.saveHandler(logString, type, e);
 			}
 		}
 	}
+
+    public static void log(int type, String... logString) {
+        if (isEnabled() && logWrites.size() > 0) {
+            for(LogWriterBase lb : logWrites) {
+                for(String s : logString) {
+                    lb.saveHandler(s, type, null);
+                }
+            }
+        }
+    }
 	
 	public static void loge(String log, Exception e) {
 		logBase(log, e, 1);
