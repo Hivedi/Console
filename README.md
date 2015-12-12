@@ -23,7 +23,7 @@ repositories {
 Dependences:
 ```
 dependencies {
-	compile 'com.github.Hivedi:Console:1.0.1'
+	compile 'com.github.Hivedi:Console:1.0.2'
 }
 ```
 
