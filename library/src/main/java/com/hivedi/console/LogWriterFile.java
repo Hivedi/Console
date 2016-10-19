@@ -1,5 +1,7 @@
 package com.hivedi.console;
 
+import android.support.annotation.Nullable;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -12,7 +14,7 @@ import java.util.Locale;
 
 public class LogWriterFile implements LogWriterBase {
 	
-	private final String extraSpaces = "                               ";
+	private final String extraSpaces = "                                   ";
 	private File lf;
 	
 	public LogWriterFile(File logFile) {
@@ -28,41 +30,42 @@ public class LogWriterFile implements LogWriterBase {
 			out.newLine(); 
 			out.flush(); 
 		} catch (IOException e) { 
-			
+			// ignore
 		} finally {
 			if (out != null) 
 			try { 
 				out.close(); 
 			} catch (IOException ioe2) {
+                // ignore
 			}
 		} 
 	} 
-	
-	@Override
-	public void saveHandler(String data, int type, Exception e) {
-		String logSaveTxt = data;
-		if (e != null) {
-			StringWriter sw = new StringWriter(); 
-			PrintWriter pw = new PrintWriter(sw); 
-			e.printStackTrace(pw);
-			logSaveTxt += extraSpaces + "\n--- STACK TRACE ---\n" + sw.toString().replace("\n", "\n" + extraSpaces);
-		}
-		String logType = null;
-		switch(type) {
-			default: 
-			case 0: logType = "VERB "; break;
-			case 1: logType = "ERROR"; break;
-			case 2: logType = "DEBUG"; break;
-			case 3: logType = "WARN "; break;
-			case 4: logType = "INFO "; break;
-		}
-		saveLog(logSaveTxt, logType);
-	}
-	
-	public static String now() { 
+
+	private static String now() {
 		return new SimpleDateFormat(
-			"yyyy-MM-dd HH:mm:ss", 
+			"yyyy-MM-dd HH:mm:ss.SSS",
 			Locale.getDefault()
 		).format(Calendar.getInstance().getTime()); 
 	}
+
+    @Override
+    public void writeLogLine(@Nullable String tag, @Nullable String log, @Nullable Throwable e, @Console.LogLevel int lvl) {
+        String logSaveTxt = log;
+        if (e != null) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            logSaveTxt += extraSpaces + "\n--- STACK TRACE ---\n" + sw.toString().replace("\n", "\n" + extraSpaces);
+        }
+        String logType;
+        switch(lvl) {
+            default:
+            case Console.TYPE_VERBOSE : logType = "VERB "; break;
+            case Console.TYPE_ERROR   : logType = "ERROR"; break;
+            case Console.TYPE_DEBUG   : logType = "DEBUG"; break;
+            case Console.TYPE_WARNING : logType = "WARN "; break;
+            case Console.TYPE_INFO    : logType = "INFO "; break;
+        }
+        saveLog(logSaveTxt, logType);
+    }
 }

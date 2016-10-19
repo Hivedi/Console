@@ -1,20 +1,23 @@
 package com.hivedi.console;
 
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 public class LogWriterLogCat implements LogWriterBase {
-	@Override
-	public void saveHandler(String data, int type, Exception e) {
-		final String TAG = Console.getTag();
-		switch(type) {
-			default:
-			case 0: Log.v(TAG, data); break;
-			case 1: Log.e(TAG, data); break;
-			case 2: Log.d(TAG, data); break;
-			case 3: Log.w(TAG, data); break;
-			case 4: Log.i(TAG, data); break;
-		}
-		if (e != null) 
-			e.printStackTrace();
-	}
+
+    @Override
+    public void writeLogLine(@Nullable String tag, @Nullable String log, @Nullable Throwable e, @Console.LogLevel int lvl) {
+        switch(lvl) {
+            default:
+            case Console.TYPE_VERBOSE : Log.v(tag, log); break;
+            case Console.TYPE_ERROR   : Log.e(tag, log); break;
+            case Console.TYPE_DEBUG   : Log.d(tag, log); break;
+            case Console.TYPE_WARNING : Log.w(tag, log); break;
+            case Console.TYPE_INFO    : Log.i(tag, log); break;
+        }
+        if (e != null) {
+            e.printStackTrace();
+        }
+    }
+
 }

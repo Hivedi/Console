@@ -14,7 +14,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         Console.setEnabled(true);
-        Console.setTag("console_tests");
+        Console.setMainTag("console_tests");
         Console.addLogWriterLogCat();
         Console.addLogWriterSystem();
     }
