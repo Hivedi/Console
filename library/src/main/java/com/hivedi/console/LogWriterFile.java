@@ -13,29 +13,21 @@ import java.util.Locale;
 public class LogWriterFile implements LogWriterBase {
 	
 	private final String extraSpaces = "                               ";
-	private File lf;
+	private final File lf;
 	
 	public LogWriterFile(File logFile) {
 		lf = logFile;
 	}
 	
 	private void saveLog(String s, String typeStr) {
-		BufferedWriter out = null; 
-		try { 
-			out = new BufferedWriter(new FileWriter(lf, true)); 
-			out.write("[" + now() + "]" + (typeStr != null ? "[" + typeStr + "]" : "") + " : "); 
-			out.write(s.replace("\n", "\n" + extraSpaces)); 
-			out.newLine(); 
-			out.flush(); 
-		} catch (IOException e) { 
-			
-		} finally {
-			if (out != null) 
-			try { 
-				out.close(); 
-			} catch (IOException ioe2) {
-			}
-		} 
+		try (BufferedWriter out = new BufferedWriter(new FileWriter(lf, true))) {
+			out.write("[" + now() + "]" + (typeStr != null ? "[" + typeStr + "]" : "") + " : ");
+			out.write(s.replace("\n", "\n" + extraSpaces));
+			out.newLine();
+			out.flush();
+		} catch (IOException e) {
+			// ignore
+		}
 	} 
 	
 	@Override
@@ -49,12 +41,12 @@ public class LogWriterFile implements LogWriterBase {
 		}
 		String logType = null;
 		switch(type) {
-			default: 
-			case 0: logType = "VERB "; break;
 			case 1: logType = "ERROR"; break;
 			case 2: logType = "DEBUG"; break;
 			case 3: logType = "WARN "; break;
 			case 4: logType = "INFO "; break;
+			case 0:
+			default: logType = "VERB "; break;
 		}
 		saveLog(logSaveTxt, logType);
 	}

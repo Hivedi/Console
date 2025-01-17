@@ -1,13 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.hivedi.console_example"
-        minSdkVersion 10
-        targetSdkVersion 25
+        minSdk 21
+        targetSdk 34
         versionCode 1
         versionName "1.0"
     }
@@ -18,12 +17,17 @@ android {
         }
     }
 
-    return null
+    namespace 'com.hivedi.console_example'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.3.0'
-    compile project(":library")
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.annotation:annotation:1.9.1'
+    implementation "androidx.appcompat:appcompat:1.7.0"
+    implementation project(":library")
 }

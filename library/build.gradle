@@ -1,14 +1,13 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdk 35
 
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 25
-        versionCode 3
-        versionName "1.0.3"
+        minSdk 19
+        targetSdk 34
+        versionCode 4
+        versionName "1.0.4"
     }
     buildTypes {
         release {
@@ -17,11 +16,15 @@ android {
         }
     }
 
-    return null
+    namespace 'com.hivedi.console'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:support-annotations:25.3.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.annotation:annotation:1.9.1'
 }

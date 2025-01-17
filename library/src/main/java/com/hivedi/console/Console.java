@@ -1,8 +1,9 @@
 package com.hivedi.console;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class Console {
 	private static String TAG = "console";
 	private static boolean consoleEnabled = false; //BuildConfig.DEBUG;
 	
-	private static ArrayList<LogWriterBase> logWrites = new ArrayList<LogWriterBase>();
+	private static final ArrayList<LogWriterBase> logWrites = new ArrayList<LogWriterBase>();
 	
 	public static int getVersion() {
 		return VERSION;
@@ -39,16 +40,14 @@ public class Console {
 	
 	@SuppressWarnings("unchecked")
 	public static <T> T getLogWriter(Class<?> c) {
-		if (logWrites.size() > 0) {
+		if (!logWrites.isEmpty()) {
 			for(LogWriterBase lw : logWrites) {
 				if (lw.getClass().equals(c)) {
                     return (T) lw;
                 }
 			}
-			return null;
-		} else {
-            return null;
-        }
+		}
+		return null;
 	}
 	
 	/**
@@ -57,7 +56,7 @@ public class Console {
 	 * @param type - 0 normal, 1 - error, 2 - debug, 3 - warning, 4 - info
 	 */
 	private static void logBase(@NonNull String logString, @Nullable Exception e, int type) {
-		if (isEnabled() && logWrites.size() > 0) {
+		if (isEnabled() && !logWrites.isEmpty()) {
 			for(LogWriterBase lb : logWrites) {
 				lb.saveHandler(logString, type, e);
 			}
@@ -65,7 +64,7 @@ public class Console {
 	}
 
     public static void log(int type, String... logString) {
-        if (isEnabled() && logWrites.size() > 0) {
+        if (isEnabled() && !logWrites.isEmpty()) {
             for(LogWriterBase lb : logWrites) {
                 for(String s : logString) {
                     lb.saveHandler(s, type, null);

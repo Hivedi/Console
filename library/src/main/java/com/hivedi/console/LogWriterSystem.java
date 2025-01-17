@@ -13,15 +13,17 @@ public class LogWriterSystem implements LogWriterBase {
 	
 	public LogWriterSystem() {}
 	public LogWriterSystem(boolean showTag, boolean showType) {
-		this.showTag = showTag; 
-		this.showType = showType; 
-		
+		this.showTag = showTag;
+		this.showType = showType;
+
 		extraSpaces = "                        ";
-		
+
 		if (this.showTag) {
-			if (Console.getTag() != null && Console.getTag().length() > 0)
-			for(int i=0; i<Console.getTag().length(); i++) 
-				extraSpaces += " ";
+			if (Console.getTag() != null && !Console.getTag().isEmpty()) {
+				for (int i = 0; i < Console.getTag().length(); i++) {
+					extraSpaces += " ";
+				}
+			}
 			extraSpaces += "  ";
 		}
 		if (this.showType) {
@@ -35,18 +37,19 @@ public class LogWriterSystem implements LogWriterBase {
 		String typeString = null;
 		if (showType) {
 			switch(arg1) {
-				default:
-				case 0: typeString = "VERBOSE"; break;
 				case 1: typeString = "ERROR  "; break;
 				case 2: typeString = "DEBUG  "; break;
 				case 3: typeString = "WARNING"; break;
 				case 4: typeString = "INFO   "; break;
+				case 0:
+				default:
+					typeString = "VERBOSE"; break;
 			}
 		}
 		
 		String tagStr = showTag ? "[" + TAG + "]"  :"";
 		
-		String logSaveTxt = "[" + now() + "]" + tagStr + "" + (typeString != null ? "[" + typeString + "]" : "") + " : " + arg0.replace("\n", "\n" + extraSpaces);
+		String logSaveTxt = "[" + now() + "]" + tagStr + (typeString != null ? "[" + typeString + "]" : "") + " : " + arg0.replace("\n", "\n" + extraSpaces);
 		System.out.println(logSaveTxt);
 		if (e != null) {
 			StringWriter sw = new StringWriter(); 

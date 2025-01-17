@@ -11,8 +11,8 @@ import java.io.StringWriter;
 import java.util.Calendar;
 
 public class LogWriterDb implements LogWriterBase {
-	private SQLiteOpenHelper dbx;
-	private Context ctx;
+	private final SQLiteOpenHelper dbx;
+	private final Context ctx;
 	private static final String DB_FILE_NAME = "log.sqlite";
 	public LogWriterDb(Context c) {
 		ctx = c;

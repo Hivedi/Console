@@ -1,8 +1,9 @@
 package com.hivedi.console_example;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.hivedi.console.Console;
 
@@ -15,9 +16,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void handleLog(View v) {
-        if (BuildConfig.DEBUG) {
-            Console.logi("Test log info");
-        }
+        Console.logi("Test log info");
     }
 
 }
